@@ -18,6 +18,13 @@ builder.Services.AddScoped<IShoppingService, ShoppingService>();
 
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ShoppingContext>();
+    db.Database.EnsureCreated();
+    if (!db.ShoppingItems.Any())
+        db.Initialize();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

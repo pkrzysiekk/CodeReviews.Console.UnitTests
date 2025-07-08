@@ -10,9 +10,18 @@ public class ShoppingContext  : DbContext
     {
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    
+
+    public void Initialize()
     {
-        optionsBuilder.UseSqlite("Data Source=ShoppingList.db");
+        Database.EnsureCreated();
+        var items = new List<ShoppingItem>();
+        items.Add(new ShoppingItem {  Name = "Eggs" });
+        items.Add(new ShoppingItem { Name = "Pepperoni" });
+        items.Add(new ShoppingItem { Name = "Pepper" });
+        items.Add(new ShoppingItem { Name = "Chocolate" });
+        this.ShoppingItems.AddRange(items);
+        this.SaveChanges();
     }
     
 }
